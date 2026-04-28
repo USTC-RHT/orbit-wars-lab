@@ -1,0 +1,6 @@
+name: "My Rule Based"
+description: "Split and commented rule-based agent derived from pilkwang-structured, with world model, scoring strategy, and faster physics aiming."
+author: "local"
+license: "Apache 2.0"
+tags: [mine, rule-based, world-model, physics-aware]
+disabled: false

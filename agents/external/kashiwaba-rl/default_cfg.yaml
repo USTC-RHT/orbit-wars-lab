@@ -1,7 +1,7 @@
 seed: 42
 run_name: orbit_wars_ppo
 device: auto
-save_dir: /kaggle/working/artifacts
+save_dir: /home/dministrator/kaggle/orbit-wars-lab/agents/external/kashiwaba-rl/artifacts
 checkpoint_every: 50
 log_every: 1
 opponent: self
@@ -18,8 +18,8 @@ model:
 
 ppo:
   rollout_steps: 64
-  num_envs: 2
-  total_updates: 100 # Note: For this public Notebook, total_updates is set to 100 to keep runtime short. For full training, increase it to 2000.
+  num_envs: 8
+  total_updates: 2000 # full training
   epochs: 4
   minibatch_size: 256
   gamma: 0.99

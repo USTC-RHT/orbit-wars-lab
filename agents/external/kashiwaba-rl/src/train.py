@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import random
 from dataclasses import dataclass
 from pathlib import Path
@@ -272,6 +273,11 @@ def main() -> None:
         opponent.sync_from(policy)
     optimizer = torch.optim.Adam(policy.parameters(), lr=cfg.ppo.lr)
     save_dir = Path(cfg.save_dir)
+    run_dir = save_dir / cfg.run_name
+    run_dir.mkdir(parents=True, exist_ok=True)
+    metrics_path = run_dir / "metrics.csv"
+    with open(metrics_path, "w", newline="") as f:
+        csv.writer(f).writerow(["update", "loss", "episode_reward_mean", "episodes", "samples"])
     for update in range(1, cfg.ppo.total_updates + 1):
         batch, batches, next_seed, stats = collect_rollout(envs, batches, policy, cfg, device, next_seed)
         metrics = ppo_update(
@@ -294,6 +300,14 @@ def main() -> None:
                 f"episodes={int(stats['episodes_finished'])} samples={int(stats['samples'])} "
                 f"loss={metrics['loss']:.4f}"
             )
+            with open(metrics_path, "a", newline="") as f:
+                csv.writer(f).writerow([
+                    update,
+                    metrics["loss"],
+                    stats["episode_reward_mean"],
+                    int(stats["episodes_finished"]),
+                    int(stats["samples"]),
+                ])
         if update % cfg.checkpoint_every == 0 or update == cfg.ppo.total_updates:
             save_checkpoint(save_dir, cfg.run_name, update, policy, optimizer, cfg)
 

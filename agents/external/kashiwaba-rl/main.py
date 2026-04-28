@@ -1,10 +1,12 @@
-"""kashiwaba RL PPO agent — 2000-update checkpoint.
+"""kashiwaba RL PPO agent — lazy-loaded to avoid subprocess startup timeout.
 
-Per tutorial's win-rate table, this checkpoint beats nearest-planet-sniper
-100% of the time (20/20 games, deterministic). Loads policy at module init,
-then runs inference per turn.
+Weight priority:
+  1. artifacts/orbit_wars_ppo/ckpt_last.pt  (locally trained, latest)
+  2. weights/ckpt_002000.pt                 (bundled pre-trained fallback)
 
-Source: notebook cells 9 + 11-15 + 37 (play_vs_sniper.py structure).
+Lazy init: model is loaded on the first agent() call, not at module import,
+so the subprocess prints {"status":"ready"} immediately and loads the model
+during the first turn instead of during startup (avoids 10s timeout).
 """
 from __future__ import annotations
 
@@ -12,8 +14,6 @@ import importlib
 import sys
 import types
 from pathlib import Path
-
-import torch
 
 _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
@@ -29,6 +29,11 @@ from src.features import (  # noqa: E402
 from src.policy import PlanetPolicy  # noqa: E402
 from src.ppo import sample_actions  # noqa: E402
 
+# Lazy-loaded globals — populated on first agent() call
+_CFG = None
+_POLICY = None
+_DEVICE = None
+
 
 def _register_module_aliases() -> None:
     """Checkpoint was pickled against src.rl_template.* paths in some cases —
@@ -42,7 +47,25 @@ def _register_module_aliases() -> None:
         sys.modules[f"src.rl_template.{name}"] = mod
 
 
-def _load_policy() -> tuple:
+def _pick_checkpoint() -> Path:
+    """Return the best available checkpoint path.
+
+    Prefers the locally-trained latest checkpoint; falls back to the bundled
+    pre-trained weights when local training hasn't started yet.
+    """
+    local = _HERE / "artifacts" / "orbit_wars_ppo" / "ckpt_last.pt"
+    if local.exists():
+        return local
+    bundled = _HERE / "weights" / "ckpt_002000.pt"
+    if bundled.exists():
+        return bundled
+    raise FileNotFoundError(
+        f"No checkpoint found. Looked for:\n  {local}\n  {bundled}"
+    )
+
+
+def _load_policy():
+    import torch
     cfg = load_train_config(str(_HERE / "default_cfg.yaml"))
     device = torch.device("cpu")
     policy = PlanetPolicy(
@@ -53,7 +76,7 @@ def _load_policy() -> tuple:
         hidden_size=cfg.model.hidden_size,
     ).to(device)
     _register_module_aliases()
-    ckpt_path = _HERE / "weights" / "ckpt_002000.pt"
+    ckpt_path = _pick_checkpoint()
     ckpt = torch.load(str(ckpt_path), map_location=device, weights_only=False)
     state_dict = ckpt.get("policy", ckpt) if isinstance(ckpt, dict) else ckpt
     policy.load_state_dict(state_dict)
@@ -61,10 +84,12 @@ def _load_policy() -> tuple:
     return cfg, policy, device
 
 
-_CFG, _POLICY, _DEVICE = _load_policy()
+def agent(obs, config=None):
+    global _CFG, _POLICY, _DEVICE
+    if _POLICY is None:
+        _CFG, _POLICY, _DEVICE = _load_policy()
 
-
-def agent(obs):
+    import torch
     batch = encode_turn(obs, _CFG.env, env_index=0)
     if batch.self_features.shape[0] == 0:
         return []
