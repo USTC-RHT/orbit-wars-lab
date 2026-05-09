@@ -1,0 +1,5 @@
+name: RL Training Nearest
+description: "NearestOpponent used in RL/src/opponents.py during local PPO training: sends up to 70% of each source planet, minimum 12 ships, to the nearest non-owned planet."
+author: local
+tags: [baseline, rule-based, training-opponent, nearest]
+disabled: false

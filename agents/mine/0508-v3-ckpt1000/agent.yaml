@@ -1,0 +1,5 @@
+name: "0508_v3_ckpt1000"
+description: "RL_new PPO policy exported from RL_new/artifacts/0508_v3/ckpt_001000.pt, using stochastic sampling at inference. Requested ckpt_000950 was not saved; this is the nearest later checkpoint."
+author: "local"
+tags: [neural-network, ppo, reinforcement-learning, sampled-policy, checkpoint-1000, run-0508-v3]
+disabled: false

@@ -1,0 +1,5 @@
+name: "rl_inbound_ckpt0300"
+description: "RL_inbound PPO policy exported from RL_inbound/artifacts/0507_inbound_check/ckpt_000300.pt, using stochastic sampling at inference."
+author: "local"
+tags: [neural-network, ppo, reinforcement-learning, inbound-features, sampled-policy, checkpoint-300]
+disabled: false

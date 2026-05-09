@@ -1,0 +1,5 @@
+name: "0508_neutral100_cnn_ckpt900"
+description: "RL_new CNN PPO policy exported from RL_new/artifacts/0508_neutral100_cnn/ckpt_000900.pt, using stochastic sampling at inference."
+author: "local"
+tags: [neural-network, cnn, ppo, reinforcement-learning, sampled-policy, checkpoint-900, run-0508-neutral100-cnn]
+disabled: false
