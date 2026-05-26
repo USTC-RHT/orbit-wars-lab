@@ -1,0 +1,32 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77098039,
+  "agents": [
+    {
+      "name": "alex chilton"
+    },
+    {
+      "name": "Justus"
+    },
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "Ryusei_0612"
+    }
+  ],
+  "team_names": [
+    "alex chilton",
+    "Justus",
+    "R ht_USTC",
+    "Ryusei_0612"
+  ],
+  "rewards": [
+    -1,
+    -1,
+    -1,
+    1
+  ],
+  "winner_idx": 3,
+  "winner": "Ryusei_0612"
+}

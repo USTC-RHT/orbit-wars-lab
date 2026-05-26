@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77126141,
+  "agents": [
+    {
+      "name": "askbox"
+    },
+    {
+      "name": "R ht_USTC"
+    }
+  ],
+  "team_names": [
+    "askbox",
+    "R ht_USTC"
+  ],
+  "rewards": [
+    1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "askbox"
+}

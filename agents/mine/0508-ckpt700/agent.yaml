@@ -1,5 +1,0 @@
-name: "0508_ckpt700"
-description: "RL_new PPO policy exported from RL_new/artifacts/0508/ckpt_000700.pt, using stochastic sampling at inference."
-author: "local"
-tags: [neural-network, ppo, reinforcement-learning, sampled-policy, checkpoint-700, run-0508]
-disabled: false

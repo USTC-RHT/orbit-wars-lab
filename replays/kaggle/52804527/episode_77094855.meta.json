@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77094855,
+  "agents": [
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "Umair Zia"
+    }
+  ],
+  "team_names": [
+    "R ht_USTC",
+    "Umair Zia"
+  ],
+  "rewards": [
+    1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "R ht_USTC"
+}

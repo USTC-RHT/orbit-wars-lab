@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77061816,
+  "agents": [
+    {
+      "name": "lazyplusplus"
+    },
+    {
+      "name": "R ht_USTC"
+    }
+  ],
+  "team_names": [
+    "lazyplusplus",
+    "R ht_USTC"
+  ],
+  "rewards": [
+    -1,
+    1
+  ],
+  "winner_idx": 1,
+  "winner": "R ht_USTC"
+}

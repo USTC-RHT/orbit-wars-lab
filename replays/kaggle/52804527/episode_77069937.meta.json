@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77069937,
+  "agents": [
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "C R Suthikshn Kumar"
+    }
+  ],
+  "team_names": [
+    "R ht_USTC",
+    "C R Suthikshn Kumar"
+  ],
+  "rewards": [
+    1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "R ht_USTC"
+}

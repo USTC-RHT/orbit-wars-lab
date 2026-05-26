@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77070581,
+  "agents": [
+    {
+      "name": "AnRyisReal"
+    },
+    {
+      "name": "R ht_USTC"
+    }
+  ],
+  "team_names": [
+    "AnRyisReal",
+    "R ht_USTC"
+  ],
+  "rewards": [
+    1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "AnRyisReal"
+}

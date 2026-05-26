@@ -1,0 +1,5 @@
+name: 0521-23000
+description: "JAX autoregressive PPO agent - 2026-05-21 run ckpt_023000."
+main: main.py
+tags: [mine, jax, ppo, autoregressive, fixed-pool]
+disabled: false

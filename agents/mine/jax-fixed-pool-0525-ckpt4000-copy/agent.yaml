@@ -1,0 +1,5 @@
+name: jax-fixed-pool-0525-ckpt4000-copy
+description: "Copy of JAX autoregressive fixed-pool 0525 checkpoint 004000 for self-play web evaluation."
+main: main.py
+tags: [mine, jax, ppo, autoregressive, fixed-pool, ckpt4000]
+disabled: false

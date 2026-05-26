@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77063557,
+  "agents": [
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "rkd"
+    }
+  ],
+  "team_names": [
+    "R ht_USTC",
+    "rkd"
+  ],
+  "rewards": [
+    -1,
+    1
+  ],
+  "winner_idx": 1,
+  "winner": "rkd"
+}

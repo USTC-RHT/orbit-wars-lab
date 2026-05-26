@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77069289,
+  "agents": [
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "Rahul Kumar Raman"
+    }
+  ],
+  "team_names": [
+    "R ht_USTC",
+    "Rahul Kumar Raman"
+  ],
+  "rewards": [
+    1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "R ht_USTC"
+}

@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77077425,
+  "agents": [
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "Kalyan"
+    }
+  ],
+  "team_names": [
+    "R ht_USTC",
+    "Kalyan"
+  ],
+  "rewards": [
+    -1,
+    1
+  ],
+  "winner_idx": 1,
+  "winner": "Kalyan"
+}

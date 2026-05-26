@@ -1,0 +1,32 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77067222,
+  "agents": [
+    {
+      "name": "MaelMnr"
+    },
+    {
+      "name": "AidenSong123"
+    },
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "Orbit Magnus"
+    }
+  ],
+  "team_names": [
+    "MaelMnr",
+    "AidenSong123",
+    "R ht_USTC",
+    "Orbit Magnus"
+  ],
+  "rewards": [
+    1,
+    -1,
+    -1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "MaelMnr"
+}

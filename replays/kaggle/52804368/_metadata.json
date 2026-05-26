@@ -1,0 +1,26 @@
+[
+  {
+    "id": 77060780,
+    "createTime": "2026-05-19T08:43:52.394282400Z",
+    "endTime": "2026-05-19T08:46:27.324791900Z",
+    "state": "COMPLETED",
+    "type": "EPISODE_TYPE_VALIDATION",
+    "agents": [
+      {
+        "id": 171280769,
+        "submissionId": 52804368,
+        "reward": 1,
+        "updatedScore": 600,
+        "teamId": 15705331
+      },
+      {
+        "id": 171280770,
+        "submissionId": 52804368,
+        "reward": 1,
+        "index": 1,
+        "updatedScore": 600,
+        "teamId": 15705331
+      }
+    ]
+  }
+]

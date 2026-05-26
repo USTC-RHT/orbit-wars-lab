@@ -1,0 +1,32 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77067490,
+  "agents": [
+    {
+      "name": "Agustin Baena"
+    },
+    {
+      "name": "Stochoshi G"
+    },
+    {
+      "name": "(\u00b4\uff65_\uff65`)"
+    },
+    {
+      "name": "R ht_USTC"
+    }
+  ],
+  "team_names": [
+    "Agustin Baena",
+    "Stochoshi G",
+    "(\u00b4\uff65_\uff65`)",
+    "R ht_USTC"
+  ],
+  "rewards": [
+    1,
+    -1,
+    -1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "Agustin Baena"
+}

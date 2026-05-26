@@ -1,0 +1,32 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77050965,
+  "agents": [
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "R ht_USTC"
+    },
+    {
+      "name": "R ht_USTC"
+    }
+  ],
+  "team_names": [
+    "R ht_USTC",
+    "R ht_USTC",
+    "R ht_USTC",
+    "R ht_USTC"
+  ],
+  "rewards": [
+    null,
+    null,
+    null,
+    null
+  ],
+  "winner_idx": null,
+  "winner": null
+}

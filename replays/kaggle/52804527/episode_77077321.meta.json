@@ -1,0 +1,22 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77077321,
+  "agents": [
+    {
+      "name": "Chase Bonfiglio"
+    },
+    {
+      "name": "R ht_USTC"
+    }
+  ],
+  "team_names": [
+    "Chase Bonfiglio",
+    "R ht_USTC"
+  ],
+  "rewards": [
+    1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "Chase Bonfiglio"
+}

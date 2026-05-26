@@ -1,0 +1,32 @@
+{
+  "meta_schema": 2,
+  "episode_id": 77068656,
+  "agents": [
+    {
+      "name": "Andnat Peace"
+    },
+    {
+      "name": "Zheng Xu"
+    },
+    {
+      "name": "Saad Hassan"
+    },
+    {
+      "name": "R ht_USTC"
+    }
+  ],
+  "team_names": [
+    "Andnat Peace",
+    "Zheng Xu",
+    "Saad Hassan",
+    "R ht_USTC"
+  ],
+  "rewards": [
+    1,
+    -1,
+    -1,
+    -1
+  ],
+  "winner_idx": 0,
+  "winner": "Andnat Peace"
+}
