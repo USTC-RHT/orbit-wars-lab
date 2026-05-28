@@ -423,7 +423,10 @@ def delete_run(run_id: str) -> dict:
     run_dir = _safe_subpath(_runs_root(), run_id)
     if not run_dir.is_dir():
         raise HTTPException(status_code=404, detail=f"Run {run_id!r} not found")
-    shutil.rmtree(run_dir)
+    with _tournament_lock:
+        if _current_run_id == run_id:
+            _clear_current_tournament_locked(cancel=True)
+    shutil.rmtree(run_dir, ignore_errors=True)
     return {"deleted": True, "run_id": run_id}
 
 
@@ -616,13 +619,60 @@ def clear_kaggle_auth() -> KaggleAuthStatus:
 # Single-tournament lock + tracking state
 _tournament_lock = threading.Lock()
 _current_run_id: str | None = None
+_current_tournament: Tournament | None = None
+_current_future: concurrent.futures.Future | None = None
+_current_generation = 0
 _executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+
+
+def _reset_tournament_executor_locked() -> None:
+    """Replace the background worker after a stale or hung tournament."""
+    global _executor
+    old = _executor
+    _executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    old.shutdown(wait=False, cancel_futures=True)
+
+
+def _clear_current_tournament_locked(*, cancel: bool) -> None:
+    global _current_run_id, _current_tournament, _current_future, _current_generation
+    if cancel and _current_tournament is not None:
+        _current_tournament.cancel()
+    if cancel and _current_future is not None:
+        _current_future.cancel()
+    _current_run_id = None
+    _current_tournament = None
+    _current_future = None
+    _current_generation += 1
+    _reset_tournament_executor_locked()
+
+
+def _clear_stale_tournament_locked() -> None:
+    if _current_run_id is None or _current_run_id == "<starting>":
+        return
+
+    run_json = _runs_root() / _current_run_id / "run.json"
+    if not run_json.is_file():
+        _clear_current_tournament_locked(cancel=True)
+        return
+
+    try:
+        data = json.loads(run_json.read_text())
+    except json.JSONDecodeError:
+        return
+    if data.get("status") != "running":
+        _clear_current_tournament_locked(cancel=False)
 
 
 @router.post("/tournaments")
 async def start_tournament(cfg: TournamentConfig) -> dict:
-    global _current_run_id
+    global _current_run_id, _current_tournament, _current_future, _current_generation
+    zoo_root = _zoo_root()
+    runs_root = _runs_root()
+    runs_root.mkdir(parents=True, exist_ok=True)
+    t = Tournament(config=cfg, runs_root=runs_root, zoo_root=zoo_root)
+
     with _tournament_lock:
+        _clear_stale_tournament_locked()
         if _current_run_id is not None:
             raise HTTPException(
                 status_code=409,
@@ -633,22 +683,26 @@ async def start_tournament(cfg: TournamentConfig) -> dict:
             )
         # Reserve the slot with a sentinel so concurrent POSTs see the lock
         _current_run_id = "<starting>"
-
-    zoo_root = _zoo_root()
-    runs_root = _runs_root()
-    runs_root.mkdir(parents=True, exist_ok=True)
-    t = Tournament(config=cfg, runs_root=runs_root, zoo_root=zoo_root)
+        _current_tournament = t
+        _current_generation += 1
+        generation = _current_generation
 
     # Launch in background thread so POST returns promptly
     def _run_and_clear() -> None:
-        global _current_run_id
+        global _current_run_id, _current_tournament, _current_future
         try:
             t.run()
         finally:
             with _tournament_lock:
-                _current_run_id = None
+                if _current_generation == generation:
+                    _current_run_id = None
+                    _current_tournament = None
+                    _current_future = None
 
-    _executor.submit(_run_and_clear)
+    future = _executor.submit(_run_and_clear)
+    with _tournament_lock:
+        if _current_generation == generation:
+            _current_future = future
 
     # Poll runs_root for newly-created run.json (≤5 s)
     deadline = time.monotonic() + 5.0
@@ -673,13 +727,16 @@ async def start_tournament(cfg: TournamentConfig) -> dict:
     if run_id is None:
         # Release lock — Tournament.run might be stuck or crashed early
         with _tournament_lock:
-            _current_run_id = None
+            if _current_generation == generation:
+                _clear_current_tournament_locked(cancel=True)
         raise HTTPException(
             status_code=500,
             detail="Tournament started but run.json never appeared",
         )
 
     with _tournament_lock:
+        if _current_generation != generation:
+            raise HTTPException(status_code=409, detail="Tournament was cancelled")
         _current_run_id = run_id
 
     return {"run_id": run_id, "status": "starting"}

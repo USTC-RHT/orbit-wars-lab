@@ -1,8 +1,0 @@
-
-> @orbit-wars-lab/viewer@0.1.0 dev /home/dministrator/kaggle/orbit-wars-lab/viewer
-> vite "--host" "127.0.0.1" "--port" "6001" "--strictPort"
-
-
-  VITE v5.4.21  ready in 172 ms
-
-  ➜  Local:   http://127.0.0.1:6001/

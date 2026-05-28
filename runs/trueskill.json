@@ -1,395 +1,54 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-05-26T08:13:07.987129+00:00",
+  "last_updated": "2026-05-28T03:44:39.934495+00:00",
   "ratings": {
-    "baselines/random": {
+    "mine/fixed-pool-tgtmask-0526-ckpt2000-onnx-hybrid": {
       "2p": {
-        "mu": 324.35478122602086,
-        "sigma": 27.15084637630462,
-        "games_played": 177
-      },
-      "4p": {
-        "mu": 520.0091553747343,
-        "sigma": 15.944620741139847,
-        "games_played": 120
+        "mu": 606.9352250742597,
+        "sigma": 25.0714531268787,
+        "games_played": 53
       }
     },
-    "baselines/starter": {
+    "mine/fixed-pool-tgtmask-0526-ckpt4000-onnx-hybrid": {
       "2p": {
-        "mu": 623.9758059631705,
-        "sigma": 28.250258353679808,
-        "games_played": 160
-      },
-      "4p": {
-        "mu": 558.1748825221213,
-        "sigma": 16.118013770804424,
-        "games_played": 120
+        "mu": 673.9246844377158,
+        "sigma": 68.73552510845228,
+        "games_played": 11
       }
     },
-    "baselines/nearest-sniper": {
+    "mine/fixed-pool-tgtmask-0526-ckpt4800-onnx-hybrid": {
       "2p": {
-        "mu": 444.41893993669214,
-        "sigma": 20.782394420720088,
-        "games_played": 336
-      },
-      "4p": {
-        "mu": 532.1464935553644,
-        "sigma": 15.87616556378035,
-        "games_played": 120
-      }
-    },
-    "external/pilkwang-structured": {
-      "2p": {
-        "mu": 803.087181754958,
-        "sigma": 22.31020182153342,
-        "games_played": 239
-      },
-      "4p": {
-        "mu": 690.9707983845703,
-        "sigma": 18.785643406732202,
-        "games_played": 120
+        "mu": 574.8981675379767,
+        "sigma": 25.369146535633558,
+        "games_played": 48
       }
     },
     "external/tamrazov-starwars": {
       "2p": {
-        "mu": 827.8731640273878,
-        "sigma": 21.147696128091585,
-        "games_played": 461
-      },
-      "4p": {
-        "mu": 634.8717377630944,
-        "sigma": 17.262694534684016,
-        "games_played": 120
-      }
-    },
-    "external/yuriygreben-architect": {
-      "2p": {
-        "mu": 911.075959926785,
-        "sigma": 27.52664832243012,
-        "games_played": 163
-      },
-      "4p": {
-        "mu": 643.9296328444976,
-        "sigma": 17.473885937023457,
-        "games_played": 120
-      }
-    },
-    "external/sigmaborov-reinforce": {
-      "2p": {
-        "mu": 758.1615785010156,
-        "sigma": 21.78770111732222,
-        "games_played": 274
-      },
-      "4p": {
-        "mu": 621.587229604134,
-        "sigma": 17.014673495191918,
-        "games_played": 120
-      }
-    },
-    "external/sigmaborov-starter": {
-      "2p": {
-        "mu": 539.1619179818917,
-        "sigma": 25.831191756498377,
-        "games_played": 264
-      },
-      "4p": {
-        "mu": 552.5213559223446,
-        "sigma": 16.034590539846775,
-        "games_played": 120
-      }
-    },
-    "external/kashiwaba-rl": {
-      "2p": {
-        "mu": 226.00240507162377,
-        "sigma": 26.387061855365342,
-        "games_played": 161
-      },
-      "4p": {
-        "mu": 527.6951974139139,
-        "sigma": 15.86994170950161,
-        "games_played": 120
-      }
-    },
-    "external/ykhnkf-distance-prioritized": {
-      "2p": {
-        "mu": 596.3029942304764,
-        "sigma": 21.908685832636465,
-        "games_played": 221
-      },
-      "4p": {
-        "mu": 526.4088518355982,
-        "sigma": 15.891958000266913,
-        "games_played": 120
-      }
-    },
-    "external/pascal-orbitwork-v14": {
-      "2p": {
-        "mu": 242.41761198746275,
-        "sigma": 28.907664358930365,
-        "games_played": 222
-      },
-      "4p": {
-        "mu": 529.2061730684793,
-        "sigma": 15.883197102384887,
-        "games_played": 120
-      }
-    },
-    "mine/rule-based": {
-      "2p": {
-        "mu": 825.6808627622652,
-        "sigma": 26.33009118803438,
-        "games_played": 82
-      }
-    },
-    "mine/reward-tuned-v2": {
-      "2p": {
-        "mu": 379.88886469243505,
-        "sigma": 77.6540270052853,
-        "games_played": 7
-      }
-    },
-    "mine/ppo-0430-latest": {
-      "2p": {
-        "mu": 505.5630096437194,
-        "sigma": 121.31653870468847,
+        "mu": 550.67753759378,
+        "sigma": 118.37009163552678,
         "games_played": 3
       }
     },
-    "mine/mask-fix-v1": {
+    "baselines/random": {
       "2p": {
-        "mu": 484.37446678552897,
-        "sigma": 60.012665125225986,
-        "games_played": 11
-      }
-    },
-    "baselines/rl-nearest-train": {
-      "2p": {
-        "mu": 386.9397567182314,
-        "sigma": 21.203362356098435,
-        "games_played": 129
-      }
-    },
-    "mine/0430agent": {
-      "2p": {
-        "mu": 533.5675650448196,
-        "sigma": 47.36193681456034,
-        "games_played": 17
-      }
-    },
-    "mine/0507-nearest-v2-ckpt200": {
-      "2p": {
-        "mu": 510.72414207508876,
-        "sigma": 89.23517908688898,
-        "games_played": 4
-      }
-    },
-    "mine/rl-inbound-ckpt0300": {
-      "2p": {
-        "mu": 546.7061822374533,
-        "sigma": 20.831207389196333,
-        "games_played": 114
-      }
-    },
-    "mine/rl-inbound-ckpt1000": {
-      "2p": {
-        "mu": 556.3318017556747,
-        "sigma": 20.71719672000952,
-        "games_played": 119
-      }
-    },
-    "mine/0508-ckpt300": {
-      "2p": {
-        "mu": 568.9077825488562,
-        "sigma": 32.19380835712152,
-        "games_played": 41
-      }
-    },
-    "mine/0508-neutral100-cnn-ckpt900": {
-      "2p": {
-        "mu": 657.3606150302602,
-        "sigma": 98.57976143417149,
-        "games_played": 6
-      }
-    },
-    "mine/0508-ckpt700": {
-      "2p": {
-        "mu": 576.2320665161116,
-        "sigma": 134.04889510050572,
-        "games_played": 2
-      }
-    },
-    "mine/0508-v3-ckpt1000": {
-      "2p": {
-        "mu": 598.8457702926966,
-        "sigma": 134.24004077567122,
-        "games_played": 2
-      }
-    },
-    "mine/0508-cnn-firehead-ckpt200": {
-      "2p": {
-        "mu": 713.4543358337024,
-        "sigma": 145.53448535807306,
-        "games_played": 2
-      }
-    },
-    "mine/0509-target-filter-no-combat-ckpt1000": {
-      "2p": {
-        "mu": 525.38504354594,
-        "sigma": 72.09359167590193,
-        "games_played": 10
-      }
-    },
-    "mine/0509-target-filter-combat-ckpt1500": {
-      "2p": {
-        "mu": 423.2453312094476,
-        "sigma": 103.3150805986124,
-        "games_played": 4
-      }
-    },
-    "mine/0511-target-filter-no-combat-ckpt1300": {
-      "2p": {
-        "mu": 633.1905023359967,
-        "sigma": 68.41333998284752,
-        "games_played": 10
-      }
-    },
-    "mine/0511-target-filter-no-combat-ckpt1500": {
-      "2p": {
-        "mu": 563.9751644599961,
-        "sigma": 117.55184614772733,
-        "games_played": 3
-      }
-    },
-    "mine/jax-selfplay-ckpt200": {
-      "2p": {
-        "mu": 396.6695775634059,
-        "sigma": 141.51690232638524,
-        "games_played": 1
-      }
-    },
-    "mine/jax-selfplay-ckpt300": {
-      "2p": {
-        "mu": 397.70892395295897,
-        "sigma": 141.6364996772267,
-        "games_played": 1
-      }
-    },
-    "mine/jax-selfplay-0513b": {
-      "2p": {
-        "mu": 719.0056388094617,
-        "sigma": 121.64269394602277,
-        "games_played": 3
-      }
-    },
-    "mine/jax-pool-0513-ckpt500": {
-      "2p": {
-        "mu": 671.2030739209277,
-        "sigma": 108.77419591489253,
+        "mu": 329.40478110951466,
+        "sigma": 114.49908504758605,
         "games_played": 5
-      },
-      "4p": {
-        "mu": 599.9598836166441,
-        "sigma": 133.5649759887899,
-        "games_played": 1
       }
     },
-    "mine/jax-pool-0514-ckpt200": {
+    "baselines/starter": {
       "2p": {
-        "mu": 769.9228153266663,
-        "sigma": 80.1811136049699,
-        "games_played": 6
-      },
-      "4p": {
-        "mu": 600.0401163817592,
-        "sigma": 133.56497598879068,
-        "games_played": 1
+        "mu": 552.8641346834263,
+        "sigma": 83.67858687289475,
+        "games_played": 9
       }
     },
-    "mine/jax-pool-0514-ckpt400": {
+    "mine/fixed-pool-tgtmask-0526-ckpt10000-onnx-hybrid": {
       "2p": {
-        "mu": 908.6450781472898,
-        "sigma": 20.918887900617182,
-        "games_played": 162
-      },
-      "4p": {
-        "mu": 753.1263573571589,
-        "sigma": 154.2914057210525,
-        "games_played": 1
-      }
-    },
-    "mine/jax-pfsp-0514-ckpt500": {
-      "2p": {
-        "mu": 677.21753242125,
-        "sigma": 76.14777678658257,
-        "games_played": 12
-      },
-      "4p": {
-        "mu": 446.8736426444382,
-        "sigma": 154.29140572272374,
-        "games_played": 1
-      }
-    },
-    "mine/jax-pfsp-0515-ckpt900": {
-      "2p": {
-        "mu": 868.389481537017,
-        "sigma": 39.18913095966611,
-        "games_played": 31
-      }
-    },
-    "mine/jax-transformer-selfplay-current-ckpt400": {
-      "2p": {
-        "mu": 611.0548003411438,
-        "sigma": 133.10346953967462,
-        "games_played": 3
-      }
-    },
-    "mine/jax-pool-0514-resume-ckpt900": {
-      "2p": {
-        "mu": 991.940093569973,
-        "sigma": 22.625742974337385,
-        "games_played": 177
-      }
-    },
-    "mine/jax-fixed-pool-0520-ckpt8000": {
-      "2p": {
-        "mu": 666.9400647959477,
-        "sigma": 35.639831315098704,
-        "games_played": 40
-      }
-    },
-    "mine/jax-fixed-pool-0520-ckpt8500": {
-      "2p": {
-        "mu": 705.5292019008225,
-        "sigma": 52.53831339610213,
-        "games_played": 14
-      }
-    },
-    "mine/0521-8500": {
-      "2p": {
-        "mu": 852.3921181370723,
-        "sigma": 39.05925487712208,
-        "games_played": 31
-      }
-    },
-    "mine/0521-23000": {
-      "2p": {
-        "mu": 926.0108709422524,
-        "sigma": 29.42205096288555,
-        "games_played": 51
-      }
-    },
-    "mine/jax-fixed-pool-0525-ckpt4000": {
-      "2p": {
-        "mu": 1108.592290981596,
-        "sigma": 50.0066148002931,
-        "games_played": 17
-      }
-    },
-    "mine/jax-fixed-pool-0525-ckpt4000-copy": {
-      "2p": {
-        "mu": 457.42086945332716,
-        "sigma": 164.09052124918207,
-        "games_played": 2
+        "mu": 632.7377183270402,
+        "sigma": 26.27550144633057,
+        "games_played": 45
       }
     }
   }

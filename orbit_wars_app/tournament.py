@@ -4,9 +4,12 @@ from __future__ import annotations
 import argparse
 import itertools
 import json
+import multiprocessing
 import os
 import random
 import sys
+import threading
+import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -147,10 +150,41 @@ class Tournament:
         *,
         runs_root: Path,
         zoo_root: Path,
+        cancel_event: threading.Event | None = None,
     ):
         self.config = config
         self.runs_root = runs_root
         self.zoo_root = zoo_root
+        self._cancel_event = cancel_event or threading.Event()
+        self._executor_lock = threading.Lock()
+        self._parallel_executor: ProcessPoolExecutor | None = None
+
+    def cancel(self) -> None:
+        """Request this tournament to stop and terminate active parallel workers."""
+        self._cancel_event.set()
+        with self._executor_lock:
+            ex = self._parallel_executor
+        if ex is not None:
+            self._terminate_parallel_workers(ex)
+            ex.shutdown(wait=False, cancel_futures=True)
+
+    def _check_cancelled(self) -> None:
+        if self._cancel_event.is_set():
+            raise RuntimeError("Tournament cancelled")
+
+    @staticmethod
+    def _terminate_parallel_workers(ex: ProcessPoolExecutor) -> None:
+        processes = list((getattr(ex, "_processes", None) or {}).values())
+        for proc in processes:
+            if proc.is_alive():
+                proc.terminate()
+        deadline = time.monotonic() + 1.0
+        for proc in processes:
+            remaining = max(0.0, deadline - time.monotonic())
+            proc.join(remaining)
+        for proc in processes:
+            if proc.is_alive():
+                proc.kill()
 
     def run(
         self,
@@ -213,6 +247,7 @@ class Tournament:
                 # nesting ProcessPoolExecutor on top would multiply RAM and
                 # lose the per-match HTTP retry isolation.
                 for mc, aids, apaths, seed in jobs:
+                    self._check_cancelled()
                     outcome = run_match(
                         agent_ids=aids,
                         agent_paths=apaths,
@@ -237,57 +272,68 @@ class Tournament:
                 # Parallel path (fast mode only). ProcessPoolExecutor amortizes
                 # the kaggle-environments import cost across N matches: each
                 # worker re-uses its loaded `make("orbit_wars")` between
-                # successive matches, so the ~3s spawn overhead pays once per
-                # worker (not once per match). M-series Mac with parallel=8
-                # gives ~6-8x wallclock speedup on this round-robin shape.
+                # successive matches, so the spawn overhead pays once per
+                # worker (not once per match). Use spawn explicitly: the web
+                # backend may already have JAX/ORT threads alive, and forking
+                # from that state can deadlock the whole tournament.
                 with ProcessPoolExecutor(
                     max_workers=self.config.parallel,
                     initializer=_quiet_kaggle_environments,
+                    mp_context=multiprocessing.get_context("spawn"),
                 ) as ex:
-                    futs = {
-                        ex.submit(
-                            _run_match_in_worker,
-                            mc, aids, [str(p) for p in apaths],
-                            self.config.mode, seed,
-                            str(replays_dir) if self.config.save_replays else None,
-                            self.config.save_replays,
-                        ): (mc, aids, apaths, seed)
-                        for mc, aids, apaths, seed in jobs
-                    }
-                    for fut in as_completed(futs):
-                        try:
-                            wr = fut.result()
-                        except BaseException as e:
-                            # A worker exception not caught by run_match's own
-                            # try/except (pickle failure, OOM, OSError on
-                            # replay write) would otherwise abort the entire
-                            # tournament and discard already-collected
-                            # matches. Synthesize a `crashed` outcome so this
-                            # match drops out of ratings but the rest of the
-                            # run completes — same fault-tolerance contract
-                            # as `run_match_fast`.
-                            mc, aids, apaths, seed = futs[fut]
-                            wr = _WorkerResult(
-                                match_counter=mc, agent_ids=aids,
-                                winner=None, scores=[], turns=0,
-                                duration_s=0.0, seed=seed,
-                                status="crashed", replay_path="",
-                                worker_pid=0,
+                    with self._executor_lock:
+                        self._parallel_executor = ex
+                    try:
+                        self._check_cancelled()
+                        futs = {
+                            ex.submit(
+                                _run_match_in_worker,
+                                mc, aids, [str(p) for p in apaths],
+                                self.config.mode, seed,
+                                str(replays_dir) if self.config.save_replays else None,
+                                self.config.save_replays,
+                            ): (mc, aids, apaths, seed)
+                            for mc, aids, apaths, seed in jobs
+                        }
+                        for fut in as_completed(futs):
+                            self._check_cancelled()
+                            try:
+                                wr = fut.result()
+                            except BaseException as e:
+                                # A worker exception not caught by run_match's own
+                                # try/except (pickle failure, OOM, OSError on
+                                # replay write) would otherwise abort the entire
+                                # tournament and discard already-collected
+                                # matches. Synthesize a `crashed` outcome so this
+                                # match drops out of ratings but the rest of the
+                                # run completes — same fault-tolerance contract
+                                # as `run_match_fast`.
+                                mc, aids, apaths, seed = futs[fut]
+                                wr = _WorkerResult(
+                                    match_counter=mc, agent_ids=aids,
+                                    winner=None, scores=[], turns=0,
+                                    duration_s=0.0, seed=seed,
+                                    status="crashed", replay_path="",
+                                    worker_pid=0,
+                                )
+                                # Record the failure on the run for postmortem.
+                                (run_dir / f"worker-error-{mc:03d}.txt").write_text(
+                                    f"{type(e).__name__}: {e}\n"
+                                )
+                            completed_count += 1
+                            self._handle_match_outcome(
+                                matches, store, run_dir, run_id, started_at,
+                                total_matches, wr.match_counter, wr.agent_ids,
+                                wr.seed, winner=wr.winner, scores=wr.scores,
+                                turns=wr.turns, duration_s=wr.duration_s,
+                                match_status=wr.status, replay_path=wr.replay_path,
+                                progress_count=completed_count,
+                                on_match_done=on_match_done,
                             )
-                            # Record the failure on the run for postmortem.
-                            (run_dir / f"worker-error-{mc:03d}.txt").write_text(
-                                f"{type(e).__name__}: {e}\n"
-                            )
-                        completed_count += 1
-                        self._handle_match_outcome(
-                            matches, store, run_dir, run_id, started_at,
-                            total_matches, wr.match_counter, wr.agent_ids,
-                            wr.seed, winner=wr.winner, scores=wr.scores,
-                            turns=wr.turns, duration_s=wr.duration_s,
-                            match_status=wr.status, replay_path=wr.replay_path,
-                            progress_count=completed_count,
-                            on_match_done=on_match_done,
-                        )
+                    finally:
+                        with self._executor_lock:
+                            if self._parallel_executor is ex:
+                                self._parallel_executor = None
         except BaseException:
             status = "aborted"
             raise
@@ -428,11 +474,14 @@ class Tournament:
         """YYYY-MM-DD-NNN — N increments for runs created the same day."""
         now = datetime.now(timezone.utc)
         prefix = now.strftime("%Y-%m-%d")
-        existing = [
-            p for p in self.runs_root.iterdir()
-            if p.is_dir() and p.name.startswith(prefix)
-        ]
-        n = len(existing) + 1
+        max_suffix = 0
+        for p in self.runs_root.iterdir():
+            if not p.is_dir() or not p.name.startswith(f"{prefix}-"):
+                continue
+            suffix = p.name.removeprefix(f"{prefix}-")
+            if suffix.isdigit():
+                max_suffix = max(max_suffix, int(suffix))
+        n = max_suffix + 1
         return f"{prefix}-{n:03d}"
 
     def _resolve_agents(self) -> list[dict]:

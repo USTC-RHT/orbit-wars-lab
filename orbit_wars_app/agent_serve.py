@@ -36,6 +36,7 @@ def load_agent(agent_dir: str) -> Optional[Callable]:
     # — installed packages take priority over local helpers.py).
     agent_dir_str = str(agent_dir)
     sys.path.append(agent_dir_str)
+    sys.modules[spec.name] = mod
     try:
         spec.loader.exec_module(mod)
     finally:
