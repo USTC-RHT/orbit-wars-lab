@@ -1,12 +1,12 @@
-"""Hybrid Orbit Wars agent.
+"""Orbit Wars ONNX agent.
 
-2-player games use an ONNX Runtime ensemble of the JAX fixed-pool target-mask
-checkpoint 10000. 4-player games delegate to Tamrazov Starwars.
+2-player and 4-player games use checkpoint 10000 from the JAX fixed-pool
+target-mask run. The ONNX inference path keeps the original 2-player
+observation transform.
 """
 
 from __future__ import annotations
 
-import importlib.util
 import json
 import os
 import sys
@@ -30,7 +30,6 @@ _ERROR_LOGGED = False
 _RUNTIME = None
 _RUNTIME_LOCK = threading.Lock()
 _PRELOAD_THREAD = None
-_TAMRAZOV = None
 _ACTIVE_2P_CHECKPOINTS = ("ckpt_010000",)
 
 
@@ -119,21 +118,6 @@ def _has_sendable_source(observation: Any) -> bool:
         if owner == player and ships >= 10.0:
             return True
     return False
-
-
-def _load_tamrazov():
-    global _TAMRAZOV
-    if _TAMRAZOV is not None:
-        return _TAMRAZOV
-    path = _HERE / "tamrazov_main.py"
-    spec = importlib.util.spec_from_file_location("_hybrid_tamrazov_main", path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"cannot load tamrazov module from {path}")
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    _TAMRAZOV = module
-    return module
 
 
 def _sigmoid(x: np.ndarray) -> np.ndarray:
@@ -468,8 +452,6 @@ def agent(observation: Any, configuration: Any = None) -> list[list[float | int]
     global _ERROR_LOGGED
     try:
         _set_agent_dir(configuration)
-        if _is_four_player(observation, configuration):
-            return _load_tamrazov().agent(observation, configuration)
         _start_preload()
         if not _has_sendable_source(observation):
             return []

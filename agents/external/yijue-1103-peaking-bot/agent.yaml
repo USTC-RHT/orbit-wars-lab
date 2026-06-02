@@ -1,0 +1,9 @@
+name: "1103 Peaking Bot"
+description: "Public Kaggle Orbit Wars notebook agent. Selected as 4P candidate; kernel yijue1/1103-peaking-bot."
+author: "yijue1"
+kernel_slug: yijue1/1103-peaking-bot
+kernel_version: 1
+date_fetched: 2026-05-29
+license: "unknown"
+tags: [external, kaggle-notebook, four-player-candidate]
+disabled: false

@@ -121,8 +121,9 @@ def _extract_outcome(
     else:
         winner = None
 
-    # Status based on any agent's final status
-    statuses = [s.get("status") for s in final_step]
+    # Status based on any agent failure during the whole match. Kaggle can leave
+    # a failed agent as DONE at the terminal step, so final_step alone hides it.
+    statuses = [s.get("status") for step in steps for s in step]
     if "ERROR" in statuses:
         status = "crashed"
     elif "TIMEOUT" in statuses:

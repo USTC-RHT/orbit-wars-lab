@@ -1,0 +1,10 @@
+
+> @orbit-wars-lab/viewer@0.1.0 dev /home/dministrator/kaggle/orbit-wars-lab/viewer
+> vite "--host" "127.0.0.1" "--port" "5173"
+
+
+  VITE v5.4.21  ready in 166 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+  ➜  press h + enter to show help
+4:32:42 PM [vite] page reload src/views/quick-match.ts

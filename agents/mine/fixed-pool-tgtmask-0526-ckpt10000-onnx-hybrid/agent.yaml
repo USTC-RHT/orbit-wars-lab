@@ -1,5 +1,5 @@
-name: "Fixed Pool TgtMask 0526 Ckpt 10000 ONNX Hybrid"
-description: "2p uses ONNX Runtime checkpoint 10000 from fixed_pool_with_tgtmask-0526_jax; 4p delegates to Tamrazov Starwars."
+name: "Fixed Pool TgtMask 0526 Ckpt 10000 ONNX"
+description: "2p and 4p both use ONNX Runtime checkpoint 10000 from fixed_pool_with_tgtmask-0526_jax. Keeps the original ONNX inference transform."
 author: "local"
-tags: ["jax", "onnx", "reinforcement-learning", "hybrid", "2p", "4p", "tamrazov"]
+tags: ["jax", "onnx", "reinforcement-learning", "2p", "4p", "ckpt10000"]
 disabled: false

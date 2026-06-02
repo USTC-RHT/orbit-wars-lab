@@ -761,6 +761,8 @@ export async function renderQuickMatch(root: HTMLElement): Promise<void> {
       mode: config.mode,
       format: config.format,
       seed_base: seedBase,
+      parallel: config.mode === "fast" ? 2 : 1,
+      save_replays: true,
       is_quick_match: true,
     };
 

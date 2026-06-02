@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-05-28T03:44:39.934495+00:00",
+  "last_updated": "2026-06-01T09:07:37.923572+00:00",
   "ratings": {
     "mine/fixed-pool-tgtmask-0526-ckpt2000-onnx-hybrid": {
       "2p": {
-        "mu": 606.9352250742597,
-        "sigma": 25.0714531268787,
-        "games_played": 53
+        "mu": 581.351611372746,
+        "sigma": 21.425185964605152,
+        "games_played": 93
       }
     },
     "mine/fixed-pool-tgtmask-0526-ckpt4000-onnx-hybrid": {
@@ -18,9 +18,9 @@
     },
     "mine/fixed-pool-tgtmask-0526-ckpt4800-onnx-hybrid": {
       "2p": {
-        "mu": 574.8981675379767,
-        "sigma": 25.369146535633558,
-        "games_played": 48
+        "mu": 560.0727127296967,
+        "sigma": 22.379447618409785,
+        "games_played": 78
       }
     },
     "external/tamrazov-starwars": {
@@ -28,13 +28,23 @@
         "mu": 550.67753759378,
         "sigma": 118.37009163552678,
         "games_played": 3
+      },
+      "4p": {
+        "mu": 609.1537145121096,
+        "sigma": 17.71066311644618,
+        "games_played": 71
       }
     },
     "baselines/random": {
       "2p": {
-        "mu": 329.40478110951466,
-        "sigma": 114.49908504758605,
-        "games_played": 5
+        "mu": 269.05926844924136,
+        "sigma": 96.28109716533716,
+        "games_played": 12
+      },
+      "4p": {
+        "mu": 642.6981130008619,
+        "sigma": 45.98735022760288,
+        "games_played": 20
       }
     },
     "baselines/starter": {
@@ -42,13 +52,173 @@
         "mu": 552.8641346834263,
         "sigma": 83.67858687289475,
         "games_played": 9
+      },
+      "4p": {
+        "mu": 770.1879407095865,
+        "sigma": 81.33862982678235,
+        "games_played": 3
       }
     },
     "mine/fixed-pool-tgtmask-0526-ckpt10000-onnx-hybrid": {
       "2p": {
-        "mu": 632.7377183270402,
-        "sigma": 26.27550144633057,
-        "games_played": 45
+        "mu": 645.8192312881538,
+        "sigma": 22.015412154997037,
+        "games_played": 86
+      },
+      "4p": {
+        "mu": 592.4668937324118,
+        "sigma": 31.371085068798607,
+        "games_played": 20
+      }
+    },
+    "external/sigmaborov-reinforce": {
+      "4p": {
+        "mu": 622.5168044541916,
+        "sigma": 25.53197443128195,
+        "games_played": 31
+      }
+    },
+    "external/sigmaborov-starter": {
+      "4p": {
+        "mu": 537.0776424425652,
+        "sigma": 29.42841973070463,
+        "games_played": 20
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt10000-onnx-4p": {
+      "4p": {
+        "mu": 494.8200100297385,
+        "sigma": 43.2438070244475,
+        "games_played": 10
+      }
+    },
+    "external/pilkwang-structured": {
+      "4p": {
+        "mu": 573.741197714294,
+        "sigma": 39.616806709065955,
+        "games_played": 10
+      }
+    },
+    "external/vickimar-heuristic-1000": {
+      "4p": {
+        "mu": 719.6223167037485,
+        "sigma": 26.52793110934827,
+        "games_played": 37
+      }
+    },
+    "external/suneet-lb1200-ppo-strategy": {
+      "4p": {
+        "mu": 617.4888235190272,
+        "sigma": 22.166119718469584,
+        "games_played": 36
+      }
+    },
+    "mine/ckpt10000-onnx-suneet4p-hybrid": {
+      "4p": {
+        "mu": 624.3286170818793,
+        "sigma": 23.083133626453062,
+        "games_played": 35
+      }
+    },
+    "mine/ckpt10000-onnx-tamrazov4p-hybrid": {
+      "4p": {
+        "mu": 598.6251986047833,
+        "sigma": 22.318120322322866,
+        "games_played": 35
+      }
+    },
+    "mine/ckpt10000-onnx-yusuf4p-hybrid": {
+      "4p": {
+        "mu": 563.5639732134247,
+        "sigma": 22.609873249226105,
+        "games_played": 35
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt10000-onnx-vickimar-hybrid": {
+      "4p": {
+        "mu": 677.2222186362847,
+        "sigma": 25.543284386140456,
+        "games_played": 35
+      }
+    },
+    "external/scenery-lb1224-fork": {
+      "4p": {
+        "mu": 600.0783866891336,
+        "sigma": 21.68006012411057,
+        "games_played": 35
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt34000-onnx-vickimar-hybrid": {
+      "2p": {
+        "mu": 699.1766605130667,
+        "sigma": 34.230935536503495,
+        "games_played": 33
+      },
+      "4p": {
+        "mu": 710.4006174093979,
+        "sigma": 88.59628136048507,
+        "games_played": 3
+      }
+    },
+    "baselines/nearest-sniper": {
+      "4p": {
+        "mu": 653.8346894767587,
+        "sigma": 64.74889543763008,
+        "games_played": 4
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt10000-onnx-vickimar-value195-0530c": {
+      "2p": {
+        "mu": 504.24199964946234,
+        "sigma": 171.32735359923873,
+        "games_played": 1
+      }
+    },
+    "mine/4p-0529-ckpt2800-jax": {
+      "4p": {
+        "mu": 674.2860806347342,
+        "sigma": 41.175304382687585,
+        "games_played": 12
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt32700-onnx-tamrazov-hybrid": {
+      "4p": {
+        "mu": 631.5921087239684,
+        "sigma": 59.11416153489229,
+        "games_played": 4
+      }
+    },
+    "baselines/rl-nearest-train": {
+      "4p": {
+        "mu": 628.374737352669,
+        "sigma": 116.45639712019636,
+        "games_played": 1
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt32700-onnx-vickimar-hybrid": {
+      "4p": {
+        "mu": 838.2066514250655,
+        "sigma": 107.50071479516981,
+        "games_played": 3
+      },
+      "2p": {
+        "mu": 660.1000882662436,
+        "sigma": 167.32347671098026,
+        "games_played": 2
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt34500-onnx-vickimar-hybrid": {
+      "2p": {
+        "mu": 637.7782796541283,
+        "sigma": 179.82163615752347,
+        "games_played": 1
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt35400-onnx-tamrazov-hybrid": {
+      "2p": {
+        "mu": 635.7249411427052,
+        "sigma": 180.45884306876235,
+        "games_played": 1
       }
     }
   }

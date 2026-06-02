@@ -1,0 +1,9 @@
+name: "orbit-wars-heuristic [1000+]"
+description: "Public Kaggle Orbit Wars notebook agent. Selected as 4P candidate; kernel vickimar/orbit-wars-heuristic-1000."
+author: "vkhydras"
+kernel_slug: vickimar/orbit-wars-heuristic-1000
+kernel_version: 3
+date_fetched: 2026-05-29
+license: "unknown"
+tags: [external, kaggle-notebook, four-player-candidate]
+disabled: false

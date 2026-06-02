@@ -669,6 +669,7 @@ async def start_tournament(cfg: TournamentConfig) -> dict:
     zoo_root = _zoo_root()
     runs_root = _runs_root()
     runs_root.mkdir(parents=True, exist_ok=True)
+    existing_run_dirs = {p.name for p in runs_root.iterdir() if p.is_dir()}
     t = Tournament(config=cfg, runs_root=runs_root, zoo_root=zoo_root)
 
     with _tournament_lock:
@@ -709,7 +710,7 @@ async def start_tournament(cfg: TournamentConfig) -> dict:
     run_id: str | None = None
     while time.monotonic() < deadline:
         for p in sorted(runs_root.iterdir(), reverse=True):
-            if not p.is_dir() or p.name == "latest":
+            if not p.is_dir() or p.name == "latest" or p.name in existing_run_dirs:
                 continue
             run_json = p / "run.json"
             if run_json.is_file():
