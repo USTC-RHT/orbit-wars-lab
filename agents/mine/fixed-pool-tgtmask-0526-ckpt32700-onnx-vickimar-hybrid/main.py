@@ -26,6 +26,22 @@ _HERE = Path(globals().get("__file__", ".")).resolve().parent
 if not sys.path or sys.path[0] != str(_HERE):
     sys.path.insert(0, str(_HERE))
 
+
+def _drop_foreign_jax_agent_modules() -> None:
+    local_pkg = (_HERE / "jax_agent").resolve()
+    for name, module in list(sys.modules.items()):
+        if name != "jax_agent" and not name.startswith("jax_agent."):
+            continue
+        module_file = getattr(module, "__file__", None)
+        if module_file is None:
+            sys.modules.pop(name, None)
+            continue
+        try:
+            Path(module_file).resolve().relative_to(local_pkg)
+        except ValueError:
+            sys.modules.pop(name, None)
+
+
 _ERROR_LOGGED = False
 _RUNTIME = None
 _RUNTIME_LOCK = threading.Lock()
@@ -194,6 +210,7 @@ class _CheckpointRuntime:
 class _OnnxEnsembleRuntime:
     def __init__(self, root: Path):
         ort = _import_onnxruntime()
+        _drop_foreign_jax_agent_modules()
 
         from jax_agent.numpy_inference import (
             encode_batch_np,

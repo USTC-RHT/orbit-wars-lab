@@ -1,0 +1,5 @@
+name: "Fixed Pool TgtMask 0526 Ckpt 49000 ONNX Tamrazov Hybrid"
+description: "2P uses fixed_pool_with_tgtmask-0526_jax ckpt_049000 exported to ONNX; 4P delegates to tamrazov-starwars."
+author: "local"
+tags: ["onnx", "reinforcement-learning", "2p", "fixed-pool", "tgtmask", "ckpt49000", "tamrazov-hybrid"]
+disabled: false

@@ -1,5 +1,0 @@
-name: "4P 0529 Ckpt 2800 JAX"
-description: "Direct JAX runtime for Go_for_4P checkpoint ckpt_002800, intended for local 4P visualization."
-author: "local"
-tags: ["jax", "reinforcement-learning", "4p", "ckpt2800", "visualization"]
-disabled: false

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-06-01T09:07:37.923572+00:00",
+  "last_updated": "2026-06-04T09:16:07.810220+00:00",
   "ratings": {
     "mine/fixed-pool-tgtmask-0526-ckpt2000-onnx-hybrid": {
       "2p": {
@@ -150,9 +150,9 @@
     },
     "mine/fixed-pool-tgtmask-0526-ckpt34000-onnx-vickimar-hybrid": {
       "2p": {
-        "mu": 699.1766605130667,
-        "sigma": 34.230935536503495,
-        "games_played": 33
+        "mu": 640.3914055058183,
+        "sigma": 20.840904843361976,
+        "games_played": 113
       },
       "4p": {
         "mu": 710.4006174093979,
@@ -202,23 +202,58 @@
         "games_played": 3
       },
       "2p": {
-        "mu": 660.1000882662436,
-        "sigma": 167.32347671098026,
-        "games_played": 2
+        "mu": 618.8912870352198,
+        "sigma": 20.343001462479275,
+        "games_played": 129
       }
     },
     "mine/fixed-pool-tgtmask-0526-ckpt34500-onnx-vickimar-hybrid": {
       "2p": {
-        "mu": 637.7782796541283,
-        "sigma": 179.82163615752347,
-        "games_played": 1
+        "mu": 545.9407260710934,
+        "sigma": 30.395434673062017,
+        "games_played": 41
       }
     },
     "mine/fixed-pool-tgtmask-0526-ckpt35400-onnx-tamrazov-hybrid": {
       "2p": {
-        "mu": 635.7249411427052,
-        "sigma": 180.45884306876235,
-        "games_played": 1
+        "mu": 619.0536758051085,
+        "sigma": 20.503188172017932,
+        "games_played": 121
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt48800-jax": {
+      "2p": {
+        "mu": 624.4918501206522,
+        "sigma": 145.84337132281135,
+        "games_played": 2
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt48900-jax": {
+      "2p": {
+        "mu": 714.771976624996,
+        "sigma": 24.500265171964497,
+        "games_played": 84
+      }
+    },
+    "mine/2p-improve-from32700-0603-ckpt38000-jax": {
+      "2p": {
+        "mu": 641.6625418260867,
+        "sigma": 24.302609296981654,
+        "games_played": 82
+      }
+    },
+    "mine/fixed-pool-tgtmask-0526-ckpt48900-onnx-tamrazov-hybrid": {
+      "2p": {
+        "mu": 632.0249699014654,
+        "sigma": 30.686987136180647,
+        "games_played": 45
+      }
+    },
+    "mine/2p-improve-from32700-0603-ckpt38000-onnx-tamrazov-hybrid": {
+      "2p": {
+        "mu": 566.2252720437805,
+        "sigma": 32.1606491493356,
+        "games_played": 40
       }
     }
   }
