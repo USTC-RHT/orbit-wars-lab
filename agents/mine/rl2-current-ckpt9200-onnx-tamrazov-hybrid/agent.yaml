@@ -1,0 +1,5 @@
+name: rl2-current-ckpt9200-onnx-tamrazov-hybrid
+description: "2P uses RL_2_current_checkpoint_only ckpt_009200 exported to ONNX; 4P delegates to tamrazov-starwars."
+main: main.py
+tags: ["onnx", "reinforcement-learning", "2p", "rl2-current", "ckpt9200", "tamrazov-hybrid"]
+disabled: false
