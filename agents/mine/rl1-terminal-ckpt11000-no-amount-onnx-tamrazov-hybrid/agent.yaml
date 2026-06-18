@@ -1,0 +1,5 @@
+name: rl1-terminal-ckpt11000-no-amount-onnx-tamrazov-hybrid
+description: "2P uses no-amount-head RL_1 terminal-only ckpt_011000 exported to ONNX; 4P delegates to tamrazov-starwars."
+main: main.py
+tags: ["onnx", "reinforcement-learning", "2p", "rl1-terminal", "ckpt11000", "no-amount-head", "tamrazov-hybrid"]
+disabled: false

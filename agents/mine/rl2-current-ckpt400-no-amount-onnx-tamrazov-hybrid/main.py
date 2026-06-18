@@ -47,7 +47,6 @@ _RUNTIME = None
 _RUNTIME_LOCK = threading.Lock()
 _PRELOAD_THREAD = None
 _TAMRAZOV = None
-_ACTIVE_2P_CHECKPOINTS = ("ckpt_000400",)
 _NEG_INF = -1.0e9
 _MIN_LAUNCH_SHIPS = 10.0
 
@@ -640,8 +639,6 @@ class _OnnxRuntime:
 
         for item in manifest["checkpoints"]:
             ckpt_dir = root / "models" / Path(item["checkpoint"]).stem
-            if _ACTIVE_2P_CHECKPOINTS and ckpt_dir.name not in _ACTIVE_2P_CHECKPOINTS:
-                continue
             meta = json.loads((ckpt_dir / "meta.json").read_text(encoding="utf-8"))
             norm_npz = np.load(ckpt_dir / "normalizer.npz")
             norm_state = {key: np.asarray(norm_npz[key], dtype=np.float32) for key in norm_npz.files}
@@ -659,7 +656,7 @@ class _OnnxRuntime:
                 )
             )
         if not self.checkpoints:
-            raise RuntimeError("no active ONNX checkpoints loaded")
+            raise RuntimeError("no ONNX checkpoints loaded from manifest")
 
         meta0 = self.checkpoints[0].meta
         self.max_planets = int(meta0["max_planets"])

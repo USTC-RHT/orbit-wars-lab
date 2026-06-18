@@ -47,7 +47,6 @@ _RUNTIME = None
 _RUNTIME_LOCK = threading.Lock()
 _PRELOAD_THREAD = None
 _TAMRAZOV = None
-_ACTIVE_2P_CHECKPOINTS = ("ckpt_049100",)
 
 
 @dataclass(frozen=True)
@@ -233,8 +232,6 @@ class _OnnxEnsembleRuntime:
 
         for item in manifest["checkpoints"]:
             ckpt_dir = root / "models" / Path(item["checkpoint"]).stem
-            if _ACTIVE_2P_CHECKPOINTS and ckpt_dir.name not in _ACTIVE_2P_CHECKPOINTS:
-                continue
             meta = json.loads((ckpt_dir / "meta.json").read_text(encoding="utf-8"))
             norm_npz = np.load(ckpt_dir / "normalizer.npz")
             norm_state = load_normalizer_np(norm_npz)
