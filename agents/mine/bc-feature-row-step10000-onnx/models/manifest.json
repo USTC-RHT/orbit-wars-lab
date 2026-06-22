@@ -1,0 +1,10 @@
+{
+  "models": [
+    {
+      "checkpoint": "/mnt/f/kaggle-orbit-wars-data/bc_runs/bc_feature_rows_fight_full/ckpt_step_00010000.pkl",
+      "checkpoint_step": 10000,
+      "name": "ckpt_step_00010000",
+      "path": "ckpt_step_00010000/bc_policy.onnx"
+    }
+  ]
+}

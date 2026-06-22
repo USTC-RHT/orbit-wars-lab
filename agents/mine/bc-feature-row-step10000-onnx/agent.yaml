@@ -1,0 +1,4 @@
+name: bc-feature-row-step10000-onnx
+description: "Feature-row BC ckpt_step_00010000 exported to ONNX; current BC fight features run through the local JAX CPU builder."
+main: main.py
+tags: ["bc", "jax", "onnx", "feature-row", "2p", "ckpt10000"]
