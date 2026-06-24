@@ -1,21 +1,6 @@
 # 依赖安装与启动
 
-## 方式一：使用已有 conda 环境
-
-如果本机已经有 `orbit-wars-lab` conda 环境，依赖已经装在：
-
-```text
-/home/dministrator/miniconda/envs/orbit-wars-lab
-```
-
-直接启动前后端：
-
-```bash
-cd orbit-wars-lab
-bash scripts/dev.sh --conda orbit-wars-lab
-```
-
-## 方式二：新机器用 conda 安装依赖
+## 方式一：用 conda 安装依赖
 
 ```bash
 cd orbit-wars-lab
@@ -41,7 +26,7 @@ viewer/package.json
 pnpm-lock.yaml
 ```
 
-## 方式三：新机器用 venv / make 安装依赖
+## 方式二：用 venv / make 安装依赖
 
 机器上需要有 `python3.12`、`pnpm` 和 `make`。
 
@@ -53,7 +38,7 @@ make dev
 
 `make setup` 会创建 `.venv`，安装 Python 依赖和 pnpm 依赖；`make dev` 会调用 `scripts/dev.sh` 启动前后端。
 
-## 方式四：Docker 启动
+## 方式三：Docker 启动
 
 Docker 会在镜像里安装依赖，本机不需要单独装 Python 包：
 
