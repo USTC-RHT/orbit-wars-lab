@@ -1,0 +1,4 @@
+name: bc-feature-row-step70000-onnx
+description: "Feature-row BC ckpt_step_00070000 exported to ONNX; NumPy feature runtime with ONNX Runtime inference."
+main: main.py
+tags: ["bc", "jax", "onnx", "feature-row", "2p", "ckpt70000"]

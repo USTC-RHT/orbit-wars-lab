@@ -1,0 +1,10 @@
+{
+  "models": [
+    {
+      "checkpoint": "ckpt_step_00070000.pkl",
+      "checkpoint_step": 70000,
+      "name": "ckpt_step_00070000",
+      "path": "ckpt_step_00070000/bc_policy.onnx"
+    }
+  ]
+}

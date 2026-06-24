@@ -1,9 +1,0 @@
-name: "[LB 1200+]Orbit Wars - PPO Strategy"
-description: "Public Kaggle Orbit Wars notebook agent. Selected as 4P candidate; kernel suneetsaini/lb-1200-orbit-wars-ppo-strategy."
-author: "Suneet Saini"
-kernel_slug: suneetsaini/lb-1200-orbit-wars-ppo-strategy
-kernel_version: 6
-date_fetched: 2026-05-29
-license: "unknown"
-tags: [external, kaggle-notebook, four-player-candidate]
-disabled: false

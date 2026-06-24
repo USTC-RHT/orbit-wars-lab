@@ -1,252 +1,393 @@
+# 启动命令
+
+本机已有 `orbit-wars-lab` conda 环境时，直接启动前后端：
+
+```bash
+cd orbit-wars-lab
+bash scripts/dev.sh --conda orbit-wars-lab
+```
+
+首次在新机器安装并启动：
+
+```bash
+cd orbit-wars-lab
+make setup
+make dev
+```
+
+Docker 启动：
+
+```bash
+cd orbit-wars-lab
+docker compose up --build
+```
+
+打开浏览器访问：
+
+```text
+http://localhost:6001
+```
+
+如果本机 `8000` 或 `6001` 已被占用，可以临时换端口：
+
+```bash
+BACKEND_PORT=8001 VIEWER_PORT=6002 bash scripts/dev.sh --conda orbit-wars-lab
+```
+
 # Orbit Wars Lab
 
-Local tournament runner + visualizer for the
-[Orbit Wars Kaggle competition](https://www.kaggle.com/competitions/orbit-wars).
+这是一个本地 Orbit Wars 评估平台：可以在浏览器里选择 agent、运行 2P/4P 对局、看回放、跑 tournament，并用 TrueSkill 记录本地评分。
 
-Ships with 11 agents out-of-the-box (3 baselines + 7 curated rule-based
-from public Kaggle notebooks + 1 PPO RL agent) and a pre-seeded TrueSkill
-leaderboard. Adds a browser UI on top of the official Kaggle replay player:
-live stats sidebar, click-to-select planets/fleets, multi-selection with
-inbound-fleet ETAs, light/dark mode, and separate tournament formats
-(round-robin + gauntlet).
+当前仓库已经整理成偏“可运行评估平台”的形态：保留前后端、agent zoo、启动脚本和 Docker 配置；删除了训练数据下载脚本、历史 runs/replays/submissions/logs、测试目录以及多余的 `agents/mine` 实验版本。
 
-![Quick Match view — light mode with planet selected](docs/screenshots/01-quick-match-view-light.png)
+## 快速启动
 
-<details>
-<summary>More screenshots</summary>
+### 方式一：Docker 启动
 
-| | |
-|---|---|
-| ![dark mode](docs/screenshots/02-quick-match-view-dark.png) | ![picker](docs/screenshots/03-quick-match-picker.png) |
-| Dark mode + fleet trajectories | Agent picker (2p / 4p, with ratings) |
-| ![tournaments](docs/screenshots/04-tournaments-create.png) | ![standings](docs/screenshots/05-tournament-standings.png) |
-| Tournament creator (round-robin / gauntlet) | Tournament standings + head-to-head matrix |
-| ![replays](docs/screenshots/06-replays-list.png) | ![agents](docs/screenshots/07-agents-zoo.png) |
-| Unified replay library (local + Kaggle import) | Agent zoo with tags |
-| ![leaderboard](docs/screenshots/08-leaderboard.png) | |
-| TrueSkill leaderboard — 2p / 4p / combined | |
-
-</details>
-
----
-
-## Quick start
-
-### Option 1: Docker (recommended)
+推荐用 Docker 启动，环境最干净。
 
 ```bash
-git clone https://github.com/automatylicza/orbit-wars-lab.git
 cd orbit-wars-lab
-docker compose up
+docker compose up --build
 ```
 
-Open <http://localhost:6001>. Done.
+打开：
 
-First run builds the image (~3-5 min, pulls pytorch CPU). Subsequent `up`
-is instant.
-
-**Port conflict?** Set `PORT` to anything free:
-```bash
-PORT=7001 docker compose up
+```text
+http://localhost:6001
 ```
 
-**macOS / non-standard UID:** to have files written by the container owned
-by your host user (not `1000`), create a `.env` once:
+如果 6001 端口被占用：
 
 ```bash
-cp .env.example .env          # shows available overrides
-echo "UID=$(id -u)" > .env    # or just do this one-liner
-echo "GID=$(id -g)" >> .env
+PORT=7001 docker compose up --build
 ```
 
-### Option 2: Native dev (faster iteration)
+Docker 中只有一个 `app` 服务。容器内部 FastAPI 监听 `8000`，`docker-compose.yml` 将它映射到宿主机 `6001`。生产模式下，后端会直接服务已经构建好的前端静态文件。
 
-Requires **Python 3.12** + **pnpm** (`npm i -g pnpm`).
+### 方式二：本地开发启动
+
+需要：
+
+- Python 3.12
+- pnpm
+- 可联网安装 Python / Node 依赖
+
+首次安装：
 
 ```bash
-git clone https://github.com/automatylicza/orbit-wars-lab.git
 cd orbit-wars-lab
+make setup
+```
+
+启动开发模式：
+
+```bash
+make dev
+```
+
+或者直接：
+
+```bash
 bash scripts/dev.sh
 ```
 
-Script creates `.venv`, installs deps, and starts backend (:8000) + Vite
-viewer (:6001) with hot-reload. Open <http://localhost:6001>.
+开发模式会同时启动：
 
----
+- 后端：`http://localhost:8000`
+- 前端：`http://localhost:6001`
 
-## What you get
+前端由 Vite 提供热更新，API 请求代理到 `localhost:8000`。
 
-- **11 agents ready to play** (see [`agents/`](agents/))
-  - `baselines/{random,starter,nearest-sniper}` — reference agents shipped
-    by Kaggle
-  - `external/pilkwang-structured` — 131 votes, LB claim ~1000, most
-    rule-layered reference
-  - `external/tamrazov-starwars` — LB claim 1224, simulation-based
-  - `external/sigmaborov-{starter,reinforce}` — rule-based with comet/sun
-    awareness
-  - `external/yuriygreben-architect` — physics-aware multi-phase
-  - `external/ykhnkf-distance-prioritized` — distance-prioritized
-    targeting, LB claim 1100
-  - `external/pascal-orbitwork-v14` — fork-iteration v14
-  - `external/kashiwaba-rl` — PPO neural-net policy (2000 updates
-    checkpoint)
-- **Pre-seeded TrueSkill leaderboard** (`runs/trueskill.json`) — local
-  tournament results that accumulate as you play. Reset to empty on
-  2026-04-25 after the Kaggle engine update (Bovard's 4-fold rotational
-  symmetry fix per [discussion #694310](https://www.kaggle.com/competitions/orbit-wars/discussion/694310));
-  re-seed by running a tournament once (Tournaments → round-robin →
-  pick all bundled agents → ~3 min).
-- **Quick Match UI** — pick 2 or 4 agents, play a game, view replay with a
-  live-stats sidebar (select any planet/fleet to see ships, production,
-  inbound fleets + ETA, destination, speed).
-- **Tournaments** — two formats:
-  - *Round-robin* (every pair ×K games)
-  - *Gauntlet* (one challenger vs the rest ×K games) — useful when you add
-    your own agent and want fast relative rating.
-- **Replay library** — combined view of local tournament replays + any
-  Kaggle episodes you import (paste a Kaggle URL).
-- **Kaggle integration (optional)** — wire up your own Kaggle API token
-  through the Settings tab to browse your own leaderboard submissions and
-  push new ones directly from the UI. The token stays on your host machine
-  at `~/.kaggle/kaggle.json` (chmod 600); see [Kaggle integration](#kaggle-integration)
-  below for setup.
-
-Everything lives in one Python process (FastAPI backend) serving the Vite
-frontend as static files — no separate node runtime in production.
-
----
-
-## Adding your own agent
+如果你已经有 conda 环境：
 
 ```bash
-cp -r agents/baselines/starter agents/mine/v1-my-bot
-# edit agents/mine/v1-my-bot/main.py — replace the `def agent(obs)` body
+bash scripts/dev.sh --conda orbit-wars-lab
 ```
 
-The `./agents` folder is mounted into the container as a live volume, so
-changes are picked up immediately — no `docker compose build` needed.
-Refresh the browser, then in *Quick Match → Picker → mine* you'll see
-your agent.
-
-For a full benchmark, run a Gauntlet tournament with your agent as the
-challenger (*Tournaments → Shape: gauntlet → Challenger: mine/v1-my-bot*).
-
-CLI equivalent (works inside the container too — `docker compose exec app
-orbit-wars-tournament gauntlet ...`):
+### 常用命令
 
 ```bash
-python -m orbit_wars_app.tournament gauntlet mine/v1-my-bot --games-per-pair 10
+make setup        # 创建 .venv，安装 Python 依赖和 pnpm 依赖
+make dev          # 同时启动后端和前端
+make backend      # 只启动 FastAPI 后端，端口 8000
+make viewer       # 只启动 Vite 前端，端口 6001
+make build        # 构建 viewer/dist
+make docker-up    # 后台启动 Docker
+make docker-down  # 停止 Docker
+make clean        # 清理 .venv、前端构建产物和 node_modules
 ```
 
----
+## 当前保留的 Agent
 
-## Where your data lives
+Agent 统一放在 `agents/` 下，按来源分三类：
 
-Both Docker and native dev write to **your host filesystem** — everything
-persists across container restarts / clones / rebuilds:
-
-| Folder | What's there | Edited by |
-|---|---|---|
-| `./agents/` | 9 bundled agents + anything you drop in `mine/` | you |
-| `./runs/trueskill.json` | TrueSkill leaderboard (seeded, live-updated) | app |
-| `./runs/<date-id>/` | Tournament metadata + match results | app |
-| `./runs/<date-id>/replays/*.json` | Replay for each match | app |
-
-Delete `runs/` if you want to wipe ratings + history and start fresh.
-Your agents are untouched.
-
----
-
-## Kaggle integration
-
-The **Submissions** tab (and its "Submit new agent" flow) needs your own
-Kaggle API token. Without one it shows a banner pointing to Settings —
-the rest of the app (Quick Match, Tournaments, local Leaderboard, Replays)
-works fine without any Kaggle auth.
-
-### Get a token
-
-1. Sign in at [kaggle.com](https://www.kaggle.com) and open
-   [kaggle.com/settings/account](https://www.kaggle.com/settings/account).
-2. Scroll to **API**. Two formats are accepted:
-   - **New format (recommended):** click *"Generate API Token"* — copy the
-     `KGAT_…` string shown on screen.
-   - **Legacy format:** if Kaggle still offers *"Create New Token"*, use
-     that — it downloads a `kaggle.json` file.
-3. Accept the [Orbit Wars competition rules](https://www.kaggle.com/competitions/orbit-wars/rules)
-   so the token can list your submissions.
-
-### Save it
-
-**Via the UI (recommended):** open **Settings → Kaggle integration**,
-paste either the bare `KGAT_…` token or the contents of `kaggle.json`,
-click **Test & save**. The backend validates against Kaggle's API and
-writes the resolved credentials to `~/.kaggle/kaggle.json` (chmod 600).
-
-**Via env vars (CI-friendly):** set `KAGGLE_USERNAME` and `KAGGLE_KEY`
-before starting the backend. Env vars win over the file at Kaggle SDK
-read time — the Settings tab reflects this with a "via env vars" badge
-and hides write buttons (you can't mutate another process's environment).
-
-### Docker
-
-The token file isn't mounted by default — uncomment one of the
-`.kaggle/` volume lines in `docker-compose.yml` to pick either:
-
-- `~/.kaggle:/home/app/.kaggle` — reuse the token you already have for
-  the `kaggle` CLI on the host
-- `./.kaggle-data:/home/app/.kaggle` — keep a separate per-project token
-  that lives next to the compose file
-
-Without a mount, tokens pasted in Settings vanish on container restart.
-
-### Privacy
-
-The token never leaves your machine except when the app talks to
-`kaggle.com` directly on your behalf (listing submissions, uploading a
-new one). The backend does not echo the token back to the browser —
-status responses only contain the username.
-
-Forked agent subprocesses run with `KAGGLE_*` environment variables
-stripped, so third-party agent code in `agents/external/` cannot read
-your token via `os.environ`. The token still lives on disk at
-`~/.kaggle/kaggle.json` (chmod 600), readable by any process running
-as your user — that is a host-level boundary, not an app-level one.
-
----
-
-## Architecture
-
-```
-viewer/              Vite + TypeScript SPA (vanilla DOM, no framework)
-orbit_wars_app/      FastAPI backend + tournament runner (Python 3.12)
-web/core/            Vendored @kaggle-environments/core (React replay player)
+```text
 agents/
-  baselines/         Reference agents (tracked in git)
-  external/          Curated public notebooks (tracked in git)
-  mine/              Your agents go here
-runs/
-  trueskill.json     Persistent TrueSkill state (seeded snapshot)
+  baselines/   Kaggle / 项目内基准 agent
+  external/    外部公开策略 agent
+  mine/        本项目保留的本地模型 agent
 ```
 
-`docker-compose.yml` runs a single multi-stage image:
+当前 `agents/mine` 只保留四个版本：
 
-1. Node builder → `viewer/dist`
-2. Python runtime → serves both API and the static viewer on port 8000
-   (published as 6001)
+```text
+bc-feature-row-step50000-onnx
+bc-feature-row-step70000-onnx
+fixed-pool-tgtmask-0526-ckpt32700-onnx-producer-hybrid
+fixed-pool-tgtmask-0526-ckpt48900-onnx-producer-hybrid
+```
 
----
+每个 agent 目录通常包含：
 
-## Credits
+```text
+agent.yaml      # agent 元信息：名字、标签、是否禁用等
+main.py         # Kaggle agent 入口，必须提供 agent(observation, configuration)
+models/         # ONNX / normalizer / manifest 等模型文件
+```
 
-Rule-based external agents are redistributed from their authors' public
-Kaggle notebooks (links + versions in each agent's `agent.yaml`). Only the
-vendored Kaggle core and viewer code are original to this repo.
+后端启动后会扫描 `agents/{baselines,external,mine}`，凡是目录里有 `main.py` 的都会出现在页面的 agent picker 中。
 
-If you're an author and want your agent removed, open an issue.
+## 使用流程
 
----
+1. 启动平台。
+2. 打开 `http://localhost:6001`。
+3. 在 Quick Match 中选择 2 个或 4 个 agent。
+4. 点击运行，平台会调用 Kaggle `orbit_wars` 环境执行对局。
+5. 对局结束后可以查看 replay、比分和 agent 状态。
+6. 在 Tournaments 中可以跑 round-robin 或 gauntlet，用于批量比较 agent。
 
-## License
+运行过程中产生的数据会写到：
 
-MIT. See [`LICENSE`](LICENSE).
+```text
+runs/
+  trueskill.json          # 本地 TrueSkill 评分
+  <date-id>/              # 每次 tournament / quick match 的结果
+    run.json
+    config.json
+    results.json
+    trueskill.json
+    replays/*.json
+```
+
+这个目录默认不需要提前存在，平台会按需创建。
+
+## 总体架构
+
+项目可以理解成四层：
+
+```text
+浏览器 UI
+  ↓
+FastAPI 后端 API
+  ↓
+Kaggle Environment 对局执行 / Tournament 调度
+  ↓
+agents/ 中的各个 main.py 策略
+```
+
+### 前端：`viewer/`
+
+`viewer/` 是 Vite + TypeScript 单页应用，负责：
+
+- agent 选择
+- quick match 创建
+- tournament 创建与进度展示
+- replay 列表和回放展示
+- ratings / TrueSkill 展示
+- Kaggle 集成页面
+
+开发模式下由 Vite 在 `6001` 端口提供页面，并把 `/api/*` 代理到后端 `8000`。
+
+生产 / Docker 模式下，`viewer/dist` 会被 FastAPI 当作静态文件直接挂载到 `/`。
+
+### Vendored Kaggle Web Core：`web/`
+
+`web/core` 是前端回放展示相关的 vendored Kaggle core。`viewer` 依赖它来展示 Orbit Wars replay。
+
+这个目录不是后端服务本身，但前端构建时会用到。
+
+### 后端：`orbit_wars_app/`
+
+后端是 Python 3.12 + FastAPI。核心文件：
+
+```text
+orbit_wars_app/main.py              # FastAPI app，挂载 API 和静态 viewer
+orbit_wars_app/api.py               # /api 路由
+orbit_wars_app/discovery.py         # 扫描 agents/，构建 agent 列表
+orbit_wars_app/match.py             # 单局 match 执行
+orbit_wars_app/tournament.py        # round-robin / gauntlet 调度
+orbit_wars_app/replay_store.py      # replay 保存和读取
+orbit_wars_app/trueskill_store.py   # TrueSkill 持久化
+orbit_wars_app/agent_subprocess.py  # faithful 模式下的 agent 子进程
+orbit_wars_app/kaggle_*.py          # Kaggle 登录、submission、replay 相关功能
+```
+
+主要 API：
+
+```text
+GET  /api/health              # 健康检查
+GET  /api/agents              # agent 列表
+GET  /api/ratings             # TrueSkill 排名
+GET  /api/runs                # 本地运行记录
+GET  /api/replays             # replay 列表
+POST /api/tournaments         # 创建 tournament
+```
+
+Quick Match 也是通过 `POST /api/tournaments` 创建，只是前端会在配置里设置 `is_quick_match: true`。
+
+### 对局执行：`match.py`
+
+对局最终由 Kaggle `kaggle-environments` 的 `orbit_wars` 环境执行。
+
+平台支持两种执行模式：
+
+- `fast`：在当前 Python 进程内直接运行 agent，速度快，适合大量评估。
+- `faithful`：每个 agent 单独起子进程，通过 HTTP 方式与 Kaggle env 通信，更接近 Kaggle 线上运行方式。
+
+大多数本地评估默认用 `fast`。
+
+### Tournament 调度：`tournament.py`
+
+Tournament 支持两种形态：
+
+- `round-robin`：所有 agent 两两对战。
+- `gauntlet`：一个 challenger 对多个 opponent。
+
+每场 match 结束后会：
+
+1. 保存 replay。
+2. 写入 results。
+3. 更新 `runs/trueskill.json`。
+4. 给前端返回进度。
+
+并行评估时，后端会用 `ProcessPoolExecutor` 分发 match，避免单个 agent 或单场对局拖慢整个 tournament。
+
+## Docker 架构
+
+Dockerfile 是多阶段构建：
+
+```text
+Stage 1: node:20-alpine
+  安装 pnpm 依赖
+  构建 viewer/dist
+
+Stage 2: python:3.12-slim
+  预编译 Python wheel
+
+Stage 3: python:3.12-slim
+  安装运行依赖
+  复制 orbit_wars_app/
+  复制 agents/
+  复制 viewer/dist
+  启动 uvicorn
+```
+
+容器启动命令：
+
+```bash
+uvicorn orbit_wars_app.main:app --host 0.0.0.0 --port 8000
+```
+
+`docker-compose.yml` 会挂载：
+
+```text
+./agents:/app/agents
+./runs:/app/runs
+```
+
+所以你在宿主机修改 agent 后，容器可以直接看到；评估结果也会落回宿主机的 `runs/`。
+
+## Kaggle Token
+
+不配置 Kaggle token 也能跑本地 quick match 和 tournament。
+
+只有这些功能需要 token：
+
+- 查看 Kaggle submission
+- 从 Kaggle 拉取 replay
+- 从 UI 上传 submission
+
+推荐在 UI 的 Settings 页面配置。也可以在 Docker 中挂载：
+
+```yaml
+- ~/.kaggle:/home/app/.kaggle
+```
+
+## 如何添加自己的 Agent
+
+复制一个最小 agent：
+
+```bash
+cp -r agents/baselines/starter agents/mine/my-agent
+```
+
+修改：
+
+```text
+agents/mine/my-agent/main.py
+agents/mine/my-agent/agent.yaml
+```
+
+刷新页面后，新的 agent 会出现在选择器里。
+
+最小入口形式：
+
+```python
+def agent(observation, configuration=None):
+    return []
+```
+
+返回值是 Kaggle Orbit Wars 的 action list。
+
+## 仓库清理状态
+
+当前仓库刻意不保留：
+
+- 训练数据下载脚本
+- 历史 runs
+- 历史 replay
+- 历史 submissions
+- tests 目录
+- 多余的 mine agent 实验版本
+
+这让仓库更适合作为一个轻量、可复现的评估平台上传到 Git 仓库。
+
+## 常见问题
+
+### 打开页面后没有 agent
+
+检查：
+
+```bash
+find agents -maxdepth 3 -name main.py
+```
+
+每个 agent 目录必须有 `main.py`。
+
+### Docker 权限不对
+
+Linux 通常默认 UID/GID 为 1000。如果宿主机用户不是 1000，可以创建 `.env`：
+
+```bash
+echo "UID=$(id -u)" > .env
+echo "GID=$(id -g)" >> .env
+```
+
+然后重启：
+
+```bash
+docker compose down
+docker compose up --build
+```
+
+### ONNX agent 在本地能跑，Kaggle submission 不能跑
+
+Kaggle submission 必须把运行时依赖一起打包，尤其是：
+
+```text
+onnxruntime/
+onnxruntime/capi/*.so
+```
+
+本仓库里的本地评估 agent 可以依赖当前环境；提交到 Kaggle 时要另外确认 tar 包是自包含的。

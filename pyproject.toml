@@ -34,13 +34,9 @@ dependencies = [
 
 [project.optional-dependencies]
 rl = [
-    # CPU-only torch wheel for the kashiwaba-rl PPO agent.
+    # CPU-only torch wheel for bundled torch-based agents.
     # pip users: add `--extra-index-url https://download.pytorch.org/whl/cpu`.
     "torch>=2.0",
-]
-dev = [
-    "pytest>=8.0",
-    "pytest-asyncio>=0.23",
 ]
 
 [project.scripts]
@@ -55,11 +51,6 @@ Issues = "https://github.com/automatylicza/orbit-wars-lab/issues"
 include = ["orbit_wars_app*"]
 exclude = ["tests*", "docs*", "refs*"]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-asyncio_mode = "auto"
-addopts = "-ra --strict-markers"
-
 [tool.ruff]
 line-length = 100
 target-version = "py312"
@@ -67,6 +58,3 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP"]
 ignore = ["E501"]  # handled by formatter
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**" = ["F401", "F811"]  # unused imports, redefinitions — normal in test fixtures

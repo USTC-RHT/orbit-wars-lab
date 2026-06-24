@@ -1,9 +1,0 @@
-name: "Orbit Wars LB 1224 Fork"
-description: "Public Kaggle Orbit Wars notebook agent. Selected as 4P candidate; kernel scenerysunfireink/orbit-wars-lb-1224-fork."
-author: "Scenery SunFireInk"
-kernel_slug: scenerysunfireink/orbit-wars-lb-1224-fork
-kernel_version: 1
-date_fetched: 2026-05-29
-license: "unknown"
-tags: [external, kaggle-notebook, four-player-candidate]
-disabled: false

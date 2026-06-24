@@ -1,6 +1,0 @@
-[pipeline] dates=2026-06-01 2026-06-02 2026-06-03 2026-06-04 2026-06-05 2026-06-06 2026-06-07
-[pipeline] data_root=/home/dministrator/kaggle/orbit-wars-lab/data
-[pipeline] shards_dir=/home/dministrator/kaggle/orbit-wars-lab/data/bc_shards/official_2026-06-01_2026-06-07_stride2
-[pipeline] checkpoint=/home/dministrator/kaggle/rl-agent/BC-agent/checkpoints/ckpt_bc_official_2026-06-01_2026-06-07_stride2.pkl
-[pipeline] config=/home/dministrator/kaggle/rl-agent/cfg_jax_fixed_pool_4090.yaml
-[2026-06-01] downloading full daily dataset kaggle/orbit-wars-episodes-2026-06-01

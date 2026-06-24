@@ -28,12 +28,11 @@ retains the author's original agent.yaml (with author + kernel_slug credit)
 and is included here for local benchmarking convenience.
 
 Credits:
-- agents/external/pilkwang-structured  — Pilkwang Kim (Apache 2.0)
-- agents/external/tamrazov-starwars    — Roman Tamrazov
-- agents/external/sigmaborov-starter   — sigmaborov
-- agents/external/sigmaborov-reinforce — sigmaborov
-- agents/external/yuriygreben-architect — yuriygreben
-- agents/external/kashiwaba-rl         — YumeNeko / kashiwaba
+- agents/external/sigmaborov-reinforce — sigmaborov (Apache 2.0)
+- agents/external/slawekbiel-producer — slawekbiel (Apache 2.0)
+- agents/external/tamrazov-starwars — Roman Tamrazov (Apache 2.0)
+- agents/external/vickimar-heuristic-1000 — vkhydras
+- agents/external/yijue-1103-peaking-bot — yijue1
 
 If you are the author of one of these agents and want it removed, please open
 a GitHub issue.

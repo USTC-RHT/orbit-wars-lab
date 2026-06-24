@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Uruchamia backend FastAPI (:8000) + Vite dev (:5173) jednocześnie.
+# Uruchamia backend FastAPI (:8000) + Vite dev (:6001) jednocześnie.
 # Ctrl+C zabija oba procesy.
 #
 # Usage:
@@ -8,6 +8,9 @@
 set -e
 
 cd "$(dirname "$0")/.."
+
+BACKEND_PORT="${BACKEND_PORT:-8000}"
+VIEWER_PORT="${VIEWER_PORT:-6001}"
 
 # --- environment activation ---
 CONDA_ENV_NAME=""
@@ -35,7 +38,7 @@ if [[ -n "$CONDA_ENV_NAME" ]]; then
     conda activate "$CONDA_ENV_NAME"
 else
     if [ ! -d ".venv" ]; then
-        echo "Run 'bash scripts/setup.sh' first to create .venv (or use --conda <env>)"
+        echo "Run 'make setup' first to create .venv (or use --conda <env>)"
         exit 1
     fi
     echo "Activating .venv"
@@ -44,16 +47,16 @@ fi
 
 trap 'kill 0' SIGINT SIGTERM
 
-uvicorn orbit_wars_app.main:app --reload --host 127.0.0.1 --port 8000 &
+uvicorn orbit_wars_app.main:app --reload --host 127.0.0.1 --port "$BACKEND_PORT" &
 BACKEND_PID=$!
 
-(cd viewer && pnpm dev) &
+(cd viewer && pnpm dev --port "$VIEWER_PORT" --strictPort) &
 FRONTEND_PID=$!
 
 echo ""
 echo "================================"
-echo " Backend : http://localhost:8000"
-echo " Viewer  : http://localhost:5173"
+echo " Backend : http://localhost:$BACKEND_PORT"
+echo " Viewer  : http://localhost:$VIEWER_PORT"
 echo " Ctrl+C  : stop both"
 echo "================================"
 

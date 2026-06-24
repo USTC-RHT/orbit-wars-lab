@@ -1,5 +1,0 @@
-name: rl2-current-ckpt400-no-amount-onnx-tamrazov-hybrid
-description: "2P uses no-amount-head RL_2_current ckpt_000400 exported to ONNX; 4P delegates to tamrazov-starwars."
-main: main.py
-tags: ["onnx", "reinforcement-learning", "2p", "rl2-current", "ckpt400", "no-amount-head", "tamrazov-hybrid"]
-disabled: false

@@ -59,10 +59,10 @@ COPY requirements.txt pyproject.toml ./
 RUN pip install --no-cache-dir --no-index --find-links=/wheels -r requirements.txt \
     && rm -rf /wheels
 
-# Application code + zoo + leaderboard seed.
+# Application code + zoo. Runtime state is created on demand.
 COPY orbit_wars_app/ orbit_wars_app/
 COPY agents/ agents/
-COPY runs/ runs/
+RUN mkdir -p runs
 
 # Register the package + console_scripts entry points from pyproject.toml
 # (`orbit-wars-tournament` CLI). --no-deps because deps are already installed.

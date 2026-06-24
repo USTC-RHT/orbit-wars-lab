@@ -43,7 +43,7 @@ COMET_PRODUCTION: float = 1.0
 # ---------------------------------------------------------------------------
 # Early termination — call the game when one player dominates the leaderboard
 #
-# Calibrated on 535 Kaggle replays (scripts/analyze_early_termination.py).
+# Calibrated on 535 Kaggle replays.
 # 2p: 100% accuracy over 242 games, saves ~48 turns / game (~30%).
 # 4p: 100% accuracy on triggered (286/293) games, saves ~59 turns / game.
 # ---------------------------------------------------------------------------

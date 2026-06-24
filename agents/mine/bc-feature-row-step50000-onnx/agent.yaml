@@ -1,0 +1,4 @@
+name: bc-feature-row-step50000-onnx
+description: "Feature-row BC ckpt_step_00050000 exported to ONNX; packaged producer4p runtime."
+main: main.py
+tags: ["bc", "jax", "onnx", "feature-row", "2p", "4p", "ckpt50000"]

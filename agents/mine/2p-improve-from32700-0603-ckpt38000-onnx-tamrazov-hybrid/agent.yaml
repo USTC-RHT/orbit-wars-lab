@@ -1,5 +1,0 @@
-name: "2P Improve From 32700 0603 Ckpt 38000 ONNX Tamrazov Hybrid"
-description: "2P uses 2p_improve_from32700_0603_jax ckpt_038000 exported to ONNX; 4P delegates to tamrazov-starwars."
-author: "local"
-tags: ["onnx", "reinforcement-learning", "2p", "improve-from32700", "ckpt38000", "tamrazov-hybrid"]
-disabled: false

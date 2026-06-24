@@ -4,16 +4,18 @@
 对同一序列 observation，两路各自推理，比较每步动作是否一致。
 
 用法：
-  cd /home/dministrator/kaggle/orbit-wars-lab
-  /home/dministrator/miniconda/envs/orbit-wars-lab/bin/python _cmp_jax_vs_onnx.py
+  cd orbit-wars-lab
+  ORBIT_WARS_JAX_PKL=../checkpoint/fixed_pool_with_tgtmask-0526_jax/ckpt_032700.pkl python _cmp_jax_vs_onnx.py
 """
+import os
 import sys, pickle, time
 from pathlib import Path
 import numpy as np
 import jax, jax.numpy as jnp
 
-AGENT_DIR = Path(__file__).parent / "agents/mine/fixed-pool-tgtmask-0526-ckpt4800-onnx-hybrid"
-PKL_PATH  = Path("/home/dministrator/kaggle/checkpoint/fixed_pool_with_tgtmask-0526_jax/ckpt_004800.pkl")
+ROOT = Path(__file__).resolve().parent
+AGENT_DIR = ROOT / "agents/mine/fixed-pool-tgtmask-0526-ckpt32700-onnx-producer-hybrid"
+PKL_PATH = Path(os.environ.get("ORBIT_WARS_JAX_PKL", "checkpoints/fixed_pool_with_tgtmask-0526_jax/ckpt_032700.pkl"))
 
 sys.path.insert(0, str(AGENT_DIR))
 

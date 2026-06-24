@@ -8,6 +8,7 @@ __pycache__/
 # Node
 node_modules/
 viewer/dist/
+*.tsbuildinfo
 
 # Credentials (NEVER commit — Settings tab can create ~/.kaggle/kaggle.json
 # and docker-compose.yml offers an opt-in ./.kaggle-data bind mount).
@@ -21,9 +22,15 @@ kaggle.json
 
 # Tournament artifacts (leaderboard snapshot is intentionally tracked as seed).
 # YYYY-NNN run dirs — broad glob future-proofs past 2026.
+runs/
 runs/[0-9]*-*/
 runs/trueskill.bak-*.json
 runs/latest
+logs/
+submissions/
+replays/
+data
+data/
 
 # Viewer transient
 viewer/replays/

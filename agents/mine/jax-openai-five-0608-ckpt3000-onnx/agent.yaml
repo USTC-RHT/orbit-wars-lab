@@ -1,4 +1,0 @@
-name: jax-openai-five-0608-ckpt3000-onnx
-description: "ONNX Runtime hybrid wrapper for ckpt_003000.pkl from the JAX OpenAI Five style run."
-main: main.py
-tags: ["jax", "onnx", "reinforcement-learning", "2p", "ckpt3000"]
