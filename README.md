@@ -1,13 +1,49 @@
-# 启动命令
+# 依赖安装与启动
 
-本机已有 `orbit-wars-lab` conda 环境时，直接启动前后端：
+## 方式一：使用已有 conda 环境
+
+如果本机已经有 `orbit-wars-lab` conda 环境，依赖已经装在：
+
+```text
+/home/dministrator/miniconda/envs/orbit-wars-lab
+```
+
+直接启动前后端：
 
 ```bash
 cd orbit-wars-lab
 bash scripts/dev.sh --conda orbit-wars-lab
 ```
 
-首次在新机器安装并启动：
+## 方式二：新机器用 conda 安装依赖
+
+```bash
+cd orbit-wars-lab
+conda create -n orbit-wars-lab python=3.12 -y
+conda activate orbit-wars-lab
+pip install -r requirements.txt
+pnpm install
+bash scripts/dev.sh --conda orbit-wars-lab
+```
+
+Python 后端依赖来自：
+
+```text
+requirements.txt
+pyproject.toml
+```
+
+前端依赖来自：
+
+```text
+package.json
+viewer/package.json
+pnpm-lock.yaml
+```
+
+## 方式三：新机器用 venv / make 安装依赖
+
+机器上需要有 `python3.12`、`pnpm` 和 `make`。
 
 ```bash
 cd orbit-wars-lab
@@ -15,7 +51,11 @@ make setup
 make dev
 ```
 
-Docker 启动：
+`make setup` 会创建 `.venv`，安装 Python 依赖和 pnpm 依赖；`make dev` 会调用 `scripts/dev.sh` 启动前后端。
+
+## 方式四：Docker 启动
+
+Docker 会在镜像里安装依赖，本机不需要单独装 Python 包：
 
 ```bash
 cd orbit-wars-lab
@@ -28,6 +68,11 @@ docker compose up --build
 http://localhost:6001
 ```
 
+本地开发模式会同时启动：
+
+- 后端：`http://localhost:8000`
+- 前端：`http://localhost:6001`
+
 如果本机 `8000` 或 `6001` 已被占用，可以临时换端口：
 
 ```bash
@@ -39,84 +84,6 @@ BACKEND_PORT=8001 VIEWER_PORT=6002 bash scripts/dev.sh --conda orbit-wars-lab
 这是一个本地 Orbit Wars 评估平台：可以在浏览器里选择 agent、运行 2P/4P 对局、看回放、跑 tournament，并用 TrueSkill 记录本地评分。
 
 当前仓库已经整理成偏“可运行评估平台”的形态：保留前后端、agent zoo、启动脚本和 Docker 配置；删除了训练数据下载脚本、历史 runs/replays/submissions/logs、测试目录以及多余的 `agents/mine` 实验版本。
-
-## 快速启动
-
-### 方式一：Docker 启动
-
-推荐用 Docker 启动，环境最干净。
-
-```bash
-cd orbit-wars-lab
-docker compose up --build
-```
-
-打开：
-
-```text
-http://localhost:6001
-```
-
-如果 6001 端口被占用：
-
-```bash
-PORT=7001 docker compose up --build
-```
-
-Docker 中只有一个 `app` 服务。容器内部 FastAPI 监听 `8000`，`docker-compose.yml` 将它映射到宿主机 `6001`。生产模式下，后端会直接服务已经构建好的前端静态文件。
-
-### 方式二：本地开发启动
-
-需要：
-
-- Python 3.12
-- pnpm
-- 可联网安装 Python / Node 依赖
-
-首次安装：
-
-```bash
-cd orbit-wars-lab
-make setup
-```
-
-启动开发模式：
-
-```bash
-make dev
-```
-
-或者直接：
-
-```bash
-bash scripts/dev.sh
-```
-
-开发模式会同时启动：
-
-- 后端：`http://localhost:8000`
-- 前端：`http://localhost:6001`
-
-前端由 Vite 提供热更新，API 请求代理到 `localhost:8000`。
-
-如果你已经有 conda 环境：
-
-```bash
-bash scripts/dev.sh --conda orbit-wars-lab
-```
-
-### 常用命令
-
-```bash
-make setup        # 创建 .venv，安装 Python 依赖和 pnpm 依赖
-make dev          # 同时启动后端和前端
-make backend      # 只启动 FastAPI 后端，端口 8000
-make viewer       # 只启动 Vite 前端，端口 6001
-make build        # 构建 viewer/dist
-make docker-up    # 后台启动 Docker
-make docker-down  # 停止 Docker
-make clean        # 清理 .venv、前端构建产物和 node_modules
-```
 
 ## 当前保留的 Agent
 
